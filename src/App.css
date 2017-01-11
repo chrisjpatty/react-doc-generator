@@ -1,0 +1,134 @@
+body{
+  background: #FBE9E7;
+  font-family: 'Roboto', sans-serif !important;
+}
+.sidebar{
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  padding: 20px;
+  transition: all .3s;
+}
+.sidebar:hover a{
+  background: #ffccbb;
+  color: #ff7b50;
+}
+.sidebar a{
+  float: left;
+  clear: both;
+  background: #ffddd2;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin: 7px 0px;
+  color: #ffb198;
+  font-weight: bold;
+  transition: all .3s;
+  cursor: pointer;
+}
+.sidebar a:hover{
+  background: #feb69f;
+  color: #ff5d29;
+}
+.body{
+  margin-left: 250px;
+  top: 0px;
+  width: calc(100vw - 267px);
+  height: 100vh;
+}
+.doc{
+  width: 85%;
+  min-width: 600px;
+  background: #fff;
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px;
+  padding-bottom: 0px;
+  border: 3px solid #FF5722;
+  border-radius: 7px 7px 3px 3px;
+  box-shadow: 0px 3px 5px -1px rgba(255, 87, 34, 0.7);
+}
+.doc-description{
+  font-style: italic;
+  color: #7b3018;
+  padding: 10px 10px 10px 0px;
+}
+.doc .header{
+  width: 100%;
+  margin-left: -10px;
+  margin-top: -10px;
+  background: #FF5722;
+  padding: 10px;
+  font-size: 24px;
+  color: #fff;
+  border-radius: 3px 3px 0px 0px;
+}
+.row h4{
+  color: #FF5722;
+  font-weight: bold;
+  font-size: 18px;
+  background: #FBE9E7;
+  margin: 0px -10px 0px -10px;
+  padding: 7px 10px;
+}
+.item{
+  color: #7b3018;
+  width: 100%;
+  margin-left: -10px;
+  margin-right: -10px;
+  border-bottom: 1px solid #FBE9E7;
+}
+.row .item:last-child{
+  border: none;
+}
+.col{
+  display: inline-block;
+  padding: 10px;
+  box-sizing: border-box;
+  height: 100%;
+  vertical-align: top;
+}
+.col.name{
+  width: 15%;
+  font-weight: bold;
+  padding-left: 20px;
+}
+.col.description{
+  width: 85%;
+  font-style: italic;
+  border-left: 2px dotted #FFAB91;
+}
+.default-val, .data-type{
+  font-weight: bold;
+  font-style: normal;
+}
+h4.sub-header{
+  background: none;
+  font-style: normal;
+  font-size: 16px;
+}
+.parameter{
+  font-style: normal;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #FBE9E7;
+  padding-bottom: 5px;
+}
+.parameter-container .parameter:last-child{
+  border: none;
+}
+.param-name{
+  width: 20%;
+  display: inline-block;
+  vertical-align: top;
+  padding-left: 10px;
+  box-sizing: border-box;
+}
+.param-description{
+  max-width: 80%;
+  display: inline-block;
+  padding-left: 10px;
+  box-sizing: border-box;
+}

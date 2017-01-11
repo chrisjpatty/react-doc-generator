@@ -3,7 +3,7 @@ body{
   font-family: 'Roboto', sans-serif !important;
 }
 .sidebar{
-  width: 250px;
+  width: 200px;
   height: 100vh;
   position: fixed;
   left: 0px;
@@ -32,14 +32,15 @@ body{
   color: #ff5d29;
 }
 .body{
-  margin-left: 250px;
+  margin-left: 200px;
   top: 0px;
-  width: calc(100vw - 267px);
+  width: calc(100vw - 217px);
   height: 100vh;
 }
 .doc{
   width: 85%;
   min-width: 600px;
+  max-width: 1000px;
   background: #fff;
   display: block;
   margin: 0 auto;

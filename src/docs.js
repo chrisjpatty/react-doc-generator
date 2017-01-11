@@ -1,4 +1,5 @@
 var shortid = require('shortid');
+import component_structure from './component_structure.svg';
 
 class Doc {
   constructor(doc = {}){
@@ -8,6 +9,7 @@ class Doc {
     this.state = doc.state || null;
     this.functions = doc.functions || null;
     this.description = doc.description || null;
+    this.image = doc.image || null;
   }
 }
 
@@ -33,6 +35,10 @@ class Parameter {
 }
 
 let Docs = [
+  new Doc({
+    name: "Component Structure",
+    image: component_structure
+  }),
   new Doc({
     name: '<Wizard />',
     description: "This component is the \"single source of truth\" for all of its children. This should be the only component that maintains its own state. This should also be the only component with functions that can manipulate data. This is important because whenever data changes it can be easily traced to one place.",
@@ -528,7 +534,7 @@ let Docs = [
       }),
       new Item({
         name: "name",
-        defualtVal: "string",
+        defaultVal: "string",
         description: 'This is technically just the id of the field. It\'s passed as the "name" since an html "name" attribute is required in order to tie a label to an input. This allows the user to click on a label, and the state of the input will change.'
       }),
       new Item({

@@ -76,6 +76,12 @@ const Doc = ({doc}) => (
       :
       null
     }
+    {
+      doc.image ?
+      <img src={doc.image} alt={doc.image}/>
+      :
+      null
+    }
   </div>
 )
 

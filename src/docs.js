@@ -10,6 +10,7 @@ class Doc {
     this.functions = doc.functions || null;
     this.description = doc.description || null;
     this.image = doc.image || null;
+    this.visible = false;
   }
 }
 
@@ -280,7 +281,7 @@ let Docs = [
     ]
   }),
   new Doc({
-    name: "<Section />",
+    name: "<ConfirmField />",
     description: "A const which renders a simple bootstrap row containing the field label and value",
     properties: [
       new Item({
@@ -296,7 +297,7 @@ let Docs = [
     ]
   }),
   new Doc({
-    name: "Section",
+    name: "<Section />",
     description: "Represents a step section. This component will loop through and render a list of fields.",
     properties: [
       new Item({

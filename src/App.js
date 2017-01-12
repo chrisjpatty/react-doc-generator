@@ -3,22 +3,36 @@ import 'normalize.css';
 import './App.css';
 import {Docs} from './docs.js';
 var scrollToElement = require('scroll-to-element');
+var VisibilitySensor = require('react-visibility-sensor');
 
 class App extends Component {
+  constructor(){
+    super();
+    this.state = {docs: Docs}
+  }
+  toggleButton = (i,e) => {
+    var docs = this.state.docs;
+    docs[i].visible = e;
+    this.setState({
+      docs: docs
+    })
+  }
   render() {
     return (
       <div className="App">
         <div className="sidebar">
-          {
-            Docs.map((doc, i) => {
-              return <Link name={doc.name} href={doc.id} key={i} />
-            })
-          }
+          <div className="sidebar-wrapper">
+            {
+              this.state.docs.map((doc, i) => {
+                return <Link name={doc.name} visible={doc.visible} href={doc.id} key={i} />
+              })
+            }
+          </div>
         </div>
         <div className="body">
           {
-            Docs.map((doc, i) => {
-              return <Doc doc={doc} key={i} />
+            this.state.docs.map((doc, i) => {
+              return <Doc doc={doc} index={i} toggleButton={this.toggleButton} key={i} />
             })
           }
         </div>
@@ -40,50 +54,66 @@ class Link extends Component {
   }
   render() {
     return (
-      <a onClick={this.scrollTo}>{this.props.name}</a>
+      <a onClick={this.scrollTo} className={this.props.visible ? "visible" : ""}>{this.props.name}</a>
     )
   }
 }
 
-const Doc = ({doc}) => (
-  <div className="doc" id={doc.id} >
-    <div className="header">
-      {doc.name}
-    </div>
-    {
-      doc.description ?
-      <div className="doc-description">
-        {doc.description}
-      </div>
-      :
-      null
-    }
-    {
-      doc.properties ?
-      <Row title={"props"} items={doc.properties} />
-      :
-      null
-    }
-    {
-      doc.state ?
-      <Row title={"state"} items={doc.state} />
-      :
-      null
-    }
-    {
-      doc.functions ?
-      <Row title={"functions"} items={doc.functions} />
-      :
-      null
-    }
-    {
-      doc.image ?
-      <img src={doc.image} alt={doc.image}/>
-      :
-      null
-    }
-  </div>
-)
+class Doc extends Component{
+  constructor(){
+    super();
+  }
+  shouldComponentUpdate = () => {
+    return false;
+  }
+  handleScroll = (e) => {
+    this.props.toggleButton(this.props.index, e);
+  }
+  render(){
+    var doc = this.props.doc;
+    return(
+      <VisibilitySensor onChange={this.handleScroll} scrollDelay={10} scrollCheck={true} partialVisibility={true} minTopValue={200}>
+        <div className="doc" id={doc.id}>
+          <div className="header">
+            {doc.name}
+          </div>
+          {
+            doc.description ?
+            <div className="doc-description">
+              {doc.description}
+            </div>
+            :
+            null
+          }
+          {
+            doc.properties ?
+            <Row title={"props"} items={doc.properties} />
+            :
+            null
+          }
+          {
+            doc.state ?
+            <Row title={"state"} items={doc.state} />
+            :
+            null
+          }
+          {
+            doc.functions ?
+            <Row title={"functions"} items={doc.functions} />
+            :
+            null
+          }
+          {
+            doc.image ?
+            <img src={doc.image} alt={doc.image}/>
+            :
+            null
+          }
+        </div>
+      </VisibilitySensor>
+    )
+  }
+}
 
 const Row = ({title, items}) => (
   <div className="row">

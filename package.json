@@ -7,10 +7,10 @@
   },
   "dependencies": {
     "normalize.css": "^5.0.0",
-    "prismjs": "^1.6.0",
     "query-string": "^4.3.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-prism": "^4.0.0",
     "react-visibility-sensor": "^3.6.1",
     "scroll-to-element": "^2.0.0",
     "shortid": "^2.2.6"

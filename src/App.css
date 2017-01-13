@@ -2,6 +2,34 @@ body{
   background: #FBE9E7;
   font-family: 'Roboto', sans-serif !important;
 }
+.app-header{
+  width: 100vw;
+  height: 50px;
+  background: #fbe0d7;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  padding-left: 20px;
+  padding-top: 10px;
+  box-sizing: border-box;
+  z-index: 10;
+}
+.app-header a {
+  float: left;
+  background: #fbd3c6;
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin: 0px 0px;
+  margin-right: 8px;
+  color: #ffa487;
+  font-weight: bold;
+  transition: all .3s;
+  cursor: pointer;
+}
+.app-header a.active{
+  background: #fcc6b3;
+  color: #fe7143;
+}
 .sidebar{
   width: 230px;
   height: 100vh;
@@ -14,6 +42,7 @@ body{
 .sidebar-wrapper{
   position: absolute;
   padding: 20px;
+  padding-top: 60px;
   top: 0;
   bottom: 0;
   left: 0;
@@ -21,8 +50,8 @@ body{
   overflow-y: scroll;
 }
 .sidebar:hover a{
-  background: #ffccbb;
-  color: #ff7b50;
+  background: #ffd5c7;
+  color: #ff8b65;
 }
 .sidebar a{
   float: left;
@@ -42,9 +71,11 @@ body{
 }
 .body{
   margin-left: 200px;
+  padding-top: 47px;
   top: 0px;
   width: calc(100vw - 217px);
   height: 100vh;
+  box-sizing: border-box;
 }
 .doc{
   width: 85%;
@@ -61,6 +92,14 @@ body{
   border-radius: 7px 7px 3px 3px;
   box-shadow: 0px 3px 5px -1px rgba(255, 87, 34, 0.7);
 }
+.doc img{
+  max-width: 100%;
+  max-height: 800px;
+  display: block;
+  margin: 0 auto;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
 .doc-description{
   font-style: italic;
   color: #7b3018;
@@ -75,6 +114,13 @@ body{
   font-size: 24px;
   color: #fff;
   border-radius: 3px 3px 0px 0px;
+}
+.prism-block{
+  display: block;
+  margin-bottom: 6px;
+  margin-top: 8px;
+  padding: 8px !important;
+  overflow-x: auto;
 }
 .row h4{
   color: #FF5722;

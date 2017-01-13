@@ -1,29 +1,64 @@
 import React, { Component } from 'react';
 import 'normalize.css';
+import './prism.css';
 import './App.css';
-import {Docs} from './docs.js';
+import {Files} from './docs.js';
+import {PrismCode} from "react-prism";
+const queryString = require('query-string');
 var scrollToElement = require('scroll-to-element');
 var VisibilitySensor = require('react-visibility-sensor');
 
 class App extends Component {
   constructor(){
     super();
-    this.state = {docs: Docs}
+    var current = 0;
+    Files[0].active = true;
+    for (var i = 0; i < Files.length; i++){
+      if(window.location.hash === "#" + Files[i].id){
+        current = i;
+        Files[i].active = true;
+      }else if(window.location.hash !== ""){
+        Files[i].active = false;
+      }
+    }
+    this.state = {currentFile: current, files: Files}
   }
   toggleButton = (i,e) => {
-    var docs = this.state.docs;
-    docs[i].visible = e;
+    var files = this.state.files;
+    files[this.state.currentFile].docs[i].visible = e;
     this.setState({
-      docs: docs
+      files: files
+    })
+  }
+  switchFile = (index) => {
+    var files = this.state.files;
+    for (var i = 0; i < files.length; i++){
+      if(index === i){
+        files[i].active = true
+      }else{
+        files[i].active = false;
+      }
+    }
+    window.location.hash = files[index].id;
+    this.setState({
+      files: files,
+      currentFile: index
     })
   }
   render() {
     return (
       <div className="App">
+        <div className="app-header">
+          {
+            this.state.files.map((file, i) => {
+              return <FileButton name={file.name} index={i} active={file.active} key={i} switchFile={this.switchFile}/>
+            })
+          }
+        </div>
         <div className="sidebar">
           <div className="sidebar-wrapper">
             {
-              this.state.docs.map((doc, i) => {
+              this.state.files[this.state.currentFile].docs.map((doc, i) => {
                 return <Link name={doc.name} visible={doc.visible} href={doc.id} key={i} />
               })
             }
@@ -31,7 +66,7 @@ class App extends Component {
         </div>
         <div className="body">
           {
-            this.state.docs.map((doc, i) => {
+            this.state.files[this.state.currentFile].docs.map((doc, i) => {
               return <Doc doc={doc} index={i} toggleButton={this.toggleButton} key={i} />
             })
           }
@@ -41,13 +76,27 @@ class App extends Component {
   }
 }
 
+class FileButton extends Component {
+  constructor(props){
+    super();
+  }
+  switchFile = () => {
+    this.props.switchFile(this.props.index);
+  }
+  render(){
+    return(
+      <a className={"file-link " + (this.props.active ? "active" : "")} onClick={this.switchFile}>{this.props.name}</a>
+    )
+  }
+}
+
 class Link extends Component {
   constructor(props){
     super();
   }
   scrollTo = () => {
     scrollToElement("#" + this.props.href, {
-      offset: -10,
+      offset: -67,
       ease: 'inOutCube',
       duration: 800
     });
@@ -60,11 +109,16 @@ class Link extends Component {
 }
 
 class Doc extends Component{
-  constructor(){
+  constructor(props){
     super();
   }
-  shouldComponentUpdate = () => {
-    return false;
+  shouldComponentUpdate = (nextProps) => {
+    if(nextProps.doc.name === this.props.doc.name){
+      return false;
+    }else{
+      return true;
+    }
+
   }
   handleScroll = (e) => {
     this.props.toggleButton(this.props.index, e);
@@ -82,6 +136,12 @@ class Doc extends Component{
             <div className="doc-description">
               {doc.description}
             </div>
+            :
+            null
+          }
+          {
+            doc.image ?
+            <img src={doc.image} alt={doc.image}/>
             :
             null
           }
@@ -104,8 +164,10 @@ class Doc extends Component{
             null
           }
           {
-            doc.image ?
-            <img src={doc.image} alt={doc.image}/>
+            doc.code != "" ?
+            <PrismCode className="language-javascript prism-block">
+              {doc.code}
+            </PrismCode>
             :
             null
           }
@@ -128,6 +190,7 @@ const Row = ({title, items}) => (
           description={item.description ? item.description : ""}
           optional={item.optional}
           returns={item.returns}
+          code={item.code}
           key={i}
         />)
       })
@@ -135,7 +198,7 @@ const Row = ({title, items}) => (
   </div>
 )
 
-const Item = ({name, dataType, defaultVal, parameters, description, returns, optional}) => (
+const Item = ({name, dataType, defaultVal, parameters, description, returns, code, optional}) => (
   <div className="item">
     <div className="col name">
       {name}
@@ -170,6 +233,16 @@ const Item = ({name, dataType, defaultVal, parameters, description, returns, opt
             return <Parameter name={ret.name} dataType={ret.dataType} description={ret.description} optional={ret.optional} key={i}/>
           })
         }
+        </span>
+        :
+        null
+      }
+      {
+        code ?
+        <span className="parameter-container">
+        <PrismCode className="language-javascript prism-block">
+          {code}
+        </PrismCode>
         </span>
         :
         null

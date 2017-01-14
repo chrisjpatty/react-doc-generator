@@ -3,6 +3,7 @@ import component_structure from './component_structure.svg';
 import wizard from './wizard.png';
 import stepButton from './stepButton.png';
 import toolbar from './toolbar.png';
+import wizardExample from './wizardExample.png';
 
 class File {
   constructor(file = {}){
@@ -24,6 +25,7 @@ class Doc {
     this.image = doc.image || null;
     this.visible = false;
     this.code = doc.code || "";
+    this.customItems = doc.customItems || null;
   }
 }
 
@@ -37,6 +39,7 @@ class Item {
     this.optional = (item.required === true ? true : false);
     this.returns = item.returns || null;
     this.code = item.code || null;
+    this.image = item.image || null;
   }
 }
 
@@ -89,6 +92,17 @@ let Files = [
     name: "wizard-data.js",
     id: "wizardData",
     docs: [
+      new Doc({
+        name: "Overview",
+        description: "wizard-data.js holds the json definitions for each form wizard. To define a new wizard, adhere to the following structure:",
+        code: "var wizardName = {\n  intro: {\n    title: 'Intro Title',\n    instructions: [\n      new Instruction({\n        title: \"Instruction Title\",\n        bullets: [\n          new Bullet({content: \"HTML content goes <b>here</b>\"})\n        ]\n      })\n    ]\n  },\n  wizard: {\n    steps: [\n      new Step({\n        title: \"Step Name\",\n        sections: [\n          new Section({\n            title: 'Section Title',\n            fields: [\n              new Field({\n                label: \"Field Label\",\n                type: \"text\",\n              })\n            ]\n          })\n        ]\n      })\n    ]\n  }\n}",
+        customItems: [
+          new Item({
+            description: "The above code will output the following wizard:",
+            image: wizardExample
+          })
+        ]
+      }),
       new Doc({
         name: "Instruction",
         description: "A class representing a set of instructions for an introduction component.",
@@ -169,7 +183,304 @@ let Files = [
           new Item({
             name: "fields",
             defaultVal: "array",
-            description: "An array of fields that will be rendered inside of the this section."
+            description: "An array of fields that will be rendered inside of the"
+          })
+        ]
+      }),
+      new Doc({
+        name: "Confirm",
+        description: "Extends Section. This class represents a special section which will trigger React to loop through and render a read-only overview of all of the steps marked with the \"confirm\" property.",
+        properties: [
+          new Item({
+            name: "type",
+            defaultVal: "string",
+            description: "Overrides the \"type\" attribute of the extended Section class. Defaults to \"confirm\"."
+          })
+        ]
+      }),
+      new Doc({
+        name: "Field",
+        description: "A class representing a form field. Some field types may have a set of subfields (for example: \"addressBlock\"). This class should be used to create those subfields as well.",
+        properties: [
+          new Item({
+            name: "fieldId",
+            defaultVal: "string",
+            description: "A short url-friendly id which is generated at runtime."
+          }),
+          new Item({
+            name: "label",
+            defaultVal: 'string',
+            description: "Will be rendered preceding the field input in a <label> tag."
+          }),
+          new Item({
+            name: "description",
+            defaultVal: "string",
+            description: "A description which will be rendered between the field label and input."
+          }),
+          new Item({
+            name: "type",
+            defaultVal: "string",
+            description: 'The type of field input to be rendered. Currently the possible valid values include, "text", "radio", "select", "checkbox", "date", "dependentRadio", "dependentSelect", "dependentCheck", "addressBlock", and "confirmFields".'
+          }),
+          new Item({
+            name: "width",
+            defaultVal: "string",
+            description: "The width of the field input. This value must be a valid css width, as it will be passed to the input as an inline-style. Defaults to \"60%\"."
+          }),
+          new Item({
+            name: "clear",
+            defaultVal: "string",
+            description: '[Deprecated] The css "clear" attribute which determines if fields can sit next to each other. This attribute is currently not implemented.'
+          }),
+          new Item({
+            name: "placeholder",
+            defaultVal: "string",
+            description: "A placeholder for the field input. Defaults to no placholder."
+          }),
+          new Item({
+            name: "value",
+            defaultVal: "various dataTypes",
+            description: "The value of the field input. Typically a string, but some field types may require a different data type. For example, \"checkbox\" will require a boolean value representing a checked or unchecked state."
+          }),
+          new Item({
+            name: "validation",
+            defaultVal: "object",
+            description: "An object which defines the types of validation to be run on the field. ",
+            parameters: [
+              new Parameter({
+                name: "onChange",
+                dataType: "array",
+                description: "An array of validation objects which will be run every time the field value changes. "
+              }),
+              new Parameter({
+                name: "onBlur",
+                dataType: "array",
+                description: "An array of validation objects which will be run as soon as the field loses focus."
+              }),
+              new Parameter({
+                name: "onAdvance",
+                dataType: "array",
+                description: "An array of validation objects which will be run as soon as the user attempts to advance to a different step."
+              })
+            ]
+          }),
+          new Item({
+            name: "errorMessage",
+            defaultVal: "string",
+            description: "An error message to be displayed to the user. This property generally should not initially be set or the user would see an error message before they've attempted to fill out the form. This property is used by validation.js to return an error message if the input is invalid. (For more information, see the entry for validation.js)"
+          }),
+          new Item({
+            name: "mask",
+            defaultVal: 'object',
+            description: "An object representing a mask function to be applied to the field input. This property is described in more detail in validation.js."
+          }),
+          new Item({
+            name: "isValid",
+            defaultVal: "boolean",
+            description: "Represents whether the user's input is valid, invalid, or null (meaning there has been no input). This value defaults to null, but if a user's data is being pulled from a database, this property should be overridden with the validity of the initial data, as currently there is no function to perform this check on the client side."
+          }),
+          new Item({
+            name: 'required',
+            defaultVal: "boolean",
+            description: "Represents whether or not the field requires input before the user may advance to another step, or submit the form. Defaults to false."
+          }),
+          new Item({
+            name: "disabled",
+            defaultVal: 'boolean',
+            description: "Represents whether or not the field input should be disabled. Defaults to false."
+          }),
+          new Item({
+            name: "selectedIndex",
+            defaultVal: "int",
+            description: "This property is only required by certain field types, namely, \"select\", and \"radio\". It indicates the index of the selected option object. To be clear, the \"value\" property of Field holds the string value of the option, while this property is that option's index."
+          }),
+          new Item({
+            name: "options",
+            defaultVal: "array",
+            description: "An array of option objects which will be rendered as options for \"select\" and \"radio\" field types. When rendered, these field types will default to the first option in this array, unless a different value has been specified by setting the appropriate value property AND selectedIndex property.",
+            parameters: [
+              new Parameter({
+                name: "value",
+                dataType: "string",
+                description: "This is the back-end value of the option. This property is not presented to the user, but is instead used uniquely identify each option. As such, the value property of each object in the options array must be unique per field, and should generally be \"url-safe\"."
+              }),
+              new Parameter({
+                name: "label",
+                dataType: 'string',
+                description: "This label will be shown to the user to represent each option."
+              })
+            ]
+          })
+        ]
+      }),
+      new Doc({
+        name: "ConfirmFields",
+        description: "Extends Field. This class represents a special kind of field which renders two inputs whose values must match to be considered valid.",
+        properties: [
+          new Item({
+            name: 'confirmFieldId',
+            defaultVal: 'string',
+            description: "A special type of field Id which represents both fields together as a group. This is a short, url-friendly id which is generated at run-time."
+          }),
+          new Item({
+            name: "fields",
+            defaultVal: "array",
+            description: "An array of Field objects which represent the fields whose values should match. Currently this field type only supports two fields, but if it neccessary, support for multiple fields can be added."
+          }),
+          new Item({
+            name: "type",
+            defaultVal: "string",
+            description: "overrides the \"type\" property of Field. Defaults to \"confirmFields\", which is required for proper rendering of these fields."
+          }),
+          new Item({
+            name: "match",
+            defaultVal: "boolean",
+            description: "Represents whether or not the provided fields' values match. If both of the values are null, this property will be null. This property is distinct from the \"valid\" property of Field, in that this only tracks whether or not the fields match, not whether or not their input is valid. For example, two fields which ask the user to confirm the name of a business could match, but the business name could still be invalid. This field requires both the match and valid properties to equal \"true\" in order for the UI to reflect their validity."
+          })
+        ],
+        code: '...\nnew ConfirmFields({\n   type: "confirmFields",\n   fields: [\n     new Field({\n       label: "Business Entity Name",\n       width: "40%",\n       required: true\n     }),\n     new Field({\n       label: "Confirm Name",\n       width: "40%",\n       required: true\n     })\n   ]\n })\n...'
+      }),
+      new Doc({
+        name: "AddressBlock",
+        description: "A class representing a group of pre-defined address fields.",
+        properties: [
+          new Item({
+            name: 'type',
+            defaultVal: "string",
+            description: "Defines the field type as \"addressBlock\"."
+          }),
+          new Item({
+            name: "label",
+            defaultVal: "string",
+            description: "This label will be rendered above all of the address fields to denote the type of address to be entered."
+          }),
+          new Item({
+            name: "fields",
+            defaultVal: "array",
+            description: "An array of Field objects. This property is defined by the constructor, and cannot be overridden. Currently the included fields are, \"Street Address\", \"Suite or Apartment Number\", \"City\", \"State\", \"County\", \"Country\", and \"Postal Code\"."
+          })
+        ],
+        code: '...\nnew AddressBlock({label: "Agent Address"})\n...'
+      }),
+      new Doc({
+        name: "DependentRadio",
+        description: "Extends Field. A class representing a special field type where the fields that are rendered proceeding it are determined by the value of a radio input.",
+        properties: [
+          new Item({
+            name: "type",
+            defaultVal: "string",
+            description: "dependentRadio"
+          }),
+          new Item({
+            name: "options",
+            defaultVal: "array",
+            description: 'An array of option objects. These options will be rendered as the radio input\'s options.',
+            parameters: [
+              new Parameter({
+                name: "value",
+                dataType: "string",
+                description: "This is the back-end value of the option. This property is not presented to the user, but is instead used to uniquely identify each option. As such, the value property of each object in the options array must be unique per field, and should generally be \"url-safe\"."
+              }),
+              new Parameter({
+                name: "label",
+                dataType: 'string',
+                description: "This label will be shown to the user to represent each option."
+              }),
+              new Parameter({
+                name: "fields",
+                dataType: 'array',
+                description: "This is an array of Field objects that will be rendered if this option is selected."
+              })
+            ]
+          }),
+          new Item({
+            name: "value",
+            defaultVal: "string",
+            description: "The value of the radio input. Defaults to the value of the first option object in the options array."
+          }),
+          new Item({
+            name: "label",
+            defaultVal: "string",
+            description: "Overrides the label property of Field. This is the label of the radio input."
+          })
+        ],
+        customItems: [
+          new Item({
+            code: '/*The following code example will render no fields if "Domestic North Dakota Business" \nis checked, and will render 4 fields if "Foreign Business is checked."*/\nnew DependentRadio({\n  label: "Formation Locale",\n  options: [\n    {value: "domestic", label: "Domestic North Dakota Business", fields: []},\n    {value: "foreign", label: "Foreign Business", fields: [\n      new Field({\n        type: "text",\n        label: "State or Country of Formation",\n        width: "30%"\n      }),\n      new Field({\n        type: "date",\n        label: "Formed On:",\n        width: "20%"\n      }),\n      new Field({\n        type: "date",\n        label: "Commenced Doing Business in North Dakota on:",\n        width: "20%"\n      }),\n      new Field({\n        type: "date",\n        label: "Certificate of Existence Date",\n        width: "20%"\n      })\n    ]}\n  ]\n})'
+          })
+        ]
+      }),
+      new Doc({
+        name: "DependentSelect",
+        description: "Extends Field. A class representing a special field type where the fields that are rendered proceeding it are determined by the value of a select input.",
+        properties: [
+          new Item({
+            name: "type",
+            defaultVal: "string",
+            description: "dependentSelect"
+          }),
+          new Item({
+            name: "options",
+            defaultVal: "array",
+            description: 'An array of option objects. These options will be rendered as the select input\'s options.',
+            parameters: [
+              new Parameter({
+                name: "value",
+                dataType: "string",
+                description: "This is the back-end value of the option. This property is not presented to the user, but is instead used to uniquely identify each option. As such, the value property of each object in the options array must be unique per field, and should generally be \"url-safe\"."
+              }),
+              new Parameter({
+                name: "label",
+                dataType: 'string',
+                description: "This label will be shown to the user to represent each option."
+              }),
+              new Parameter({
+                name: "fields",
+                dataType: 'array',
+                description: "This is an array of Field objects that will be rendered if this option is selected."
+              })
+            ]
+          }),
+          new Item({
+            name: "value",
+            defaultVal: "string",
+            description: "The value of the select input. Defaults to the value of the first option object in the options array."
+          }),
+          new Item({
+            name: "label",
+            defaultVal: "string",
+            description: "Overrides the label property of Field. This is the label of the radio input."
+          })
+        ]
+      }),
+      new Doc({
+        name: "DependentCheck",
+        description: "Extends Field. This class represents a special field type that will render a set of fields depending on the checked state of a checkbox.",
+        properties: [
+          new Item({
+            name: "type",
+            defaultVal: "string",
+            description: "Overrides the \"type\" value of Field with \"dependentCheck\""
+          }),
+          new Item({
+            name: "value",
+            defaultVal: 'boolean',
+            description: "Overrides the \"value\" property of Field with a boolean value. Defaults to false (unchecked)."
+          }),
+          new Item({
+            name: "label",
+            defaultVal: "string",
+            description: "Overrides the \"label\" property of Field."
+          }),
+          new Item({
+            name: "checkedFields",
+            defaultVal: "array",
+            description: "An array of Field objects which will be rendered if the value of the checkbox is true (checked)."
+          }),
+          new Item({
+            name: "uncheckedFields",
+            defaultVal: "array",
+            description: "An array of Field objects which will be rendered if the value of the checkbox is false (unchecked)."
           })
         ]
       })

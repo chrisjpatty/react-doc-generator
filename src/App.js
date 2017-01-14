@@ -7,6 +7,7 @@ import {PrismCode} from "react-prism";
 const queryString = require('query-string');
 var scrollToElement = require('scroll-to-element');
 var VisibilitySensor = require('react-visibility-sensor');
+import ReactHtmlParser from 'react-html-parser';
 
 class App extends Component {
   constructor(){
@@ -126,7 +127,7 @@ class Doc extends Component{
   render(){
     var doc = this.props.doc;
     return(
-      <VisibilitySensor onChange={this.handleScroll} scrollDelay={10} scrollCheck={true} partialVisibility={true} minTopValue={200}>
+      <VisibilitySensor onChange={this.handleScroll} scrollDelay={10} scrollCheck={true} partialVisibility={true} minTopValue={50}>
         <div className="doc" id={doc.id}>
           <div className="header">
             {doc.name}
@@ -168,6 +169,14 @@ class Doc extends Component{
             <PrismCode className="language-javascript prism-block">
               {doc.code}
             </PrismCode>
+            :
+            null
+          }
+          {
+            doc.customItems ?
+            doc.customItems.map((item, i) => {
+              return <CustomItem item={item} key={i} />
+            })
             :
             null
           }
@@ -248,6 +257,31 @@ const Item = ({name, dataType, defaultVal, parameters, description, returns, cod
         null
       }
     </div>
+  </div>
+)
+
+const CustomItem = ({item}) => (
+  <div className="item custom">
+    {
+      item.description != "" && item.description ?
+      <div className="doc-description">{item.description}</div>
+      :
+      null
+    }
+    {
+      item.image ?
+      <img src={item.image} />
+      :
+      null
+    }
+    {
+      item.code ?
+      <PrismCode className="language-javascript prism-block">
+        {item.code}
+      </PrismCode>
+      :
+      null
+    }
   </div>
 )
 

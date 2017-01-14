@@ -117,8 +117,8 @@ body{
 }
 .prism-block{
   display: block;
-  margin-bottom: 6px;
-  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-top: 6px;
   padding: 8px !important;
   overflow-x: auto;
 }
@@ -136,6 +136,10 @@ body{
   margin-left: -10px;
   margin-right: -10px;
   border-bottom: 1px solid #FBE9E7;
+}
+.custom{
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .row .item:last-child{
   border: none;

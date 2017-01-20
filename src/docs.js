@@ -496,7 +496,7 @@ let Files = [
       }),
       new Doc({
         name: '<Wizard />',
-        description: "This component is the \"single source of truth\" for all of its children. This should be the only component that maintains its own state. This should also be the only component with functions that can manipulate data. This is important because whenever data changes it can be easily traced to one place.",
+        description: "This component is the \"single source of truth\" for all of its children. This should be the only component that maintains its own state. This should also be the only component with functions that can manipulate data. This is important because whenever data changes it can be easily traced to one place. \n \n There are some minor exceptions to the above rule for certain special components that require fetching data from the server to function. For example, <ServerSearch/> maintains some internal state that manages the loading states of the AJAX calls. However, the value of the fields are still inherited from the the state of <Wizard/>.",
         image: wizard,
         properties: [
           new Item({
@@ -1004,6 +1004,9 @@ let Files = [
         ]
       })
     ]
+  }),
+  new File({
+    name: "validate.js"
   })
 ]
 

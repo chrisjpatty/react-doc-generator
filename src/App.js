@@ -4,10 +4,10 @@ import './prism.css';
 import './App.css';
 import {Files} from './docs.js';
 import {PrismCode} from "react-prism";
-const queryString = require('query-string');
-var scrollToElement = require('scroll-to-element');
-var VisibilitySensor = require('react-visibility-sensor');
 import ReactHtmlParser from 'react-html-parser';
+import queryString from 'query-string';
+import scrollToElement from 'scroll-to-element';
+import VisibilitySensor from 'react-visibility-sensor';
 
 class App extends Component {
   constructor(){

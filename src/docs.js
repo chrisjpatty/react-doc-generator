@@ -1,9 +1,11 @@
-var shortid = require('shortid');
+import shortid from 'shortid';
 import component_structure from './component_structure.svg';
 import wizard from './wizard.png';
 import stepButton from './stepButton.png';
 import toolbar from './toolbar.png';
 import wizardExample from './wizardExample.png';
+import cra from './cra.png';
+import repeater from './repeater.png';
 
 class File {
   constructor(file = {}){
@@ -481,6 +483,65 @@ let Files = [
             name: "uncheckedFields",
             defaultVal: "array",
             description: "An array of Field objects which will be rendered if the value of the checkbox is false (unchecked)."
+          })
+        ]
+      }),
+      new Doc({
+        name: "<Repeater />",
+        description: "Renders a repeatable grid of fields.",
+        image: repeater,
+        properties: [
+          new Item({
+            name: 'value',
+            defaultVal: 'array',
+            description: 'Repeaters hold the value of each row of the grid as an array of objects in the format below.',
+            code:
+`  [
+    {
+      [fieldId]: {
+        [fieldName]: 'value',
+        ...
+      },
+      ...
+    }
+  ]`,
+          }),
+          new Item({
+            name: 'template',
+            defaultVal: 'array',
+            description: 'When a repeater component renders, it loops through this array of fieldIds to determine which fields to render.'
+          })
+        ]
+      }),
+      new Doc({
+        name: '<RegisteredAgentSearch />',
+        description: 'Renders a specialized component for both searching for, and creating new registered agents.',
+        image: cra,
+        properties: [
+          new Item({
+            name: 'value',
+            defaultVal: 'object',
+            description: 'This component holds its value in an object with the following structure: ',
+            code:
+`
+  {
+    INDIVIDUAL_YN: "y",
+    COMMERCIAL_YN: "y",
+    CRA_ID: "0",
+    FIRST_NAME: "",
+    MIDDLE_NAME: "",
+    LAST_NAME: "",
+    ORGANIZATION: "",
+    ADDR1: "",
+    ADDR2: "",
+    ADDR3: "",
+    CITY: "",
+    STATE: "ND",
+    COUNTY: "",
+    COUNTRY: "USA",
+    POSTAL_CODE: ""
+  }
+`
           })
         ]
       })
